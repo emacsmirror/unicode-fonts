@@ -572,7 +572,7 @@
 
 ;;; requirements
 
-;; for cl-callf, cl-member, cl-incf, cl-remove-if, cl-remove-if-not, cl-assert, cl-loop, cl-copy-list
+;; for cl-callf, cl-member, cl-incf, cl-remove-if, cl-remove-if-not, cl-assert, cl-loop, cl-copy-list, cl-first
 (require 'cl-lib)
 
 (autoload 'persistent-soft-store               "persistent-soft" "Under SYMBOL, store VALUE in the LOCATION persistent data store."    )
@@ -4925,7 +4925,7 @@ Instructions for FONTSET-NAME will be placed in alist
         (cond
           ((eq unicode-fonts-existence-checks 'none)
            t)
-          ((eq unicode-fonts-existence-checks 'first)
+          ((eq unicode-fonts-existence-checks 'cl-first)
            (setq fonts (list (unicode-fonts-first-existing-font fonts))))
           (t    ; 'all
            (setq fonts (cl-remove-if-not 'unicode-fonts-font-exists-p fonts))))
@@ -4954,7 +4954,7 @@ Instructions for FONTSET-NAME will be placed in alist
           (cond
             ((eq unicode-fonts-existence-checks 'none)
              t)
-            ((eq unicode-fonts-existence-checks 'first)
+            ((eq unicode-fonts-existence-checks 'cl-first)
              (setq fonts (list (unicode-fonts-first-existing-font fonts))))
             (t    ; 'all
              (setq fonts (cl-remove-if-not 'unicode-fonts-font-exists-p fonts))))
@@ -4988,7 +4988,7 @@ Instructions for FONTSET-NAME will be placed in alist
               (cond
                 ((eq unicode-fonts-existence-checks 'none)
                  t)
-                ((eq unicode-fonts-existence-checks 'first)
+                ((eq unicode-fonts-existence-checks 'cl-first)
                  (setq fonts (list (unicode-fonts-first-existing-font fonts))))
                 (t    ; 'all
                  (setq fonts (cl-remove-if-not 'unicode-fonts-font-exists-p fonts))))
@@ -5104,8 +5104,8 @@ and regenerated."
   (when (display-multi-font-p)
     (unicode-fonts--load-or-generate-instructions fontset-name regenerate)
     (setq unicode-fonts--instructions
-          (cl-map 'list 
-                  (lambda (x) 
+          (cl-map 'list
+                  (lambda (x)
                     (cons (car x) ;; get rid of symbols such as '\...
                           (cl-remove-if-not #'consp (cdr x))))
                   unicode-fonts--instructions))
